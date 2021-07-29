@@ -3,13 +3,14 @@ import speech_recognition as sr
 import datetime
 import wikipedia
 import os
-import smtplib
 
 #set up speech engine
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[0].id)
 name = 'Dan'
+#wake assistant word
+wakeWord = 'jarvis'
 
 #will pronounce the parameter
 def speak(text):
@@ -42,7 +43,9 @@ def greeting():
 def takeCommand():
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        audio = r.listen(source)
+        while 1:
+            r.adjust_for_ambient_noise(source)
+            audio = r.listen(source)
 
     try:
         query = r.recognize_google(audio, language = 'en-us')
